@@ -1,0 +1,13 @@
+.bar {
+  fill: darkslateblue;
+}
+
+.bar :hover {
+  fill: darksalmon;
+}
+
+.tooltip {
+  font-family: sans-serif;
+  font-size: 10px;
+  fill: black;
+}
