@@ -98,10 +98,34 @@ let enter = function (d) {
   drawAxis(d);
 }
 
+// Update dynamic elements on Redraw
+let update = function (d) {
+  let w = Math.floor(540 / d.length);
+
+  graph.rects.transition().duration(750)
+  .attr("width", w)
+  .attr("x", function (d) {
+    return graph.x(d);
+  })
+  .attr("y", function (d) {
+    return graph.y(d);
+  })
+  .attr("height", function (d) {
+    return graph.height(d);
+  });
+}
+
+// Cleanup
+let exit = function () {
+  graph.rects.exit().remove();
+}
+
 // Redraw graph with data and metric
 let render = function (d, m) {
   init(d, m);
   enter(d);
+  update(d);
+  exit();
 }
 
 // Main IIFE
