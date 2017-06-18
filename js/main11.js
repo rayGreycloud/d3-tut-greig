@@ -25,7 +25,7 @@ let graph = {
 };
 
 // Draw new axes based on offsets
-let drawAxis = function (d) {
+let drawAxis = (d) => {
   graph.container.svg.selectAll("g").remove();
   graph.container.svg.selectAll("g").data(d).enter()
     .append("g")
@@ -38,7 +38,7 @@ let drawAxis = function (d) {
 }
 
 // Display info about highlighted bar
-let toolTip = function (d) {
+let toolTip = (d) => {
   graph.container.svg.append("text")
     .attr("x", graph.xScale(d['age']))
     .attr("y", graph.yScale(d[graph.metric]))
@@ -47,12 +47,10 @@ let toolTip = function (d) {
 }
 
 // Remove tooltip on mouseout
-let removeToolTip = function (d) {
-  graph.container.svg.selectAll(".tooltip").remove();
-}
+let removeToolTip = (d) => graph.container.svg.selectAll(".tooltip").remove();
 
 // Set metric, scales, domains and axes
-let init = function (d, m) {
+let init = (d, m) => {
   graph.metric = m;
   graph.xScale = d3.scaleLinear()
     .domain([
@@ -73,33 +71,23 @@ let init = function (d, m) {
 }
 
 // Set static attributes
-let enter = function (d) {
+let enter = (d) => {
   let w = (480 / d.length);
 
   graph.rects.enter().append("rect")
     .attr("class", "bar")
     .attr("width", w)
-    .attr("x", function (d) {
-      return graph.x(d);
-    })
-    .attr("y", function (d) {
-      return graph.y(d);
-    })
-    .attr("height", function (d) {
-      return graph.height(d);
-    })
-    .on("mouseover", function (d) {
-      toolTip(d);
-    })
-    .on("mouseout", function (d) {
-      removeToolTip(d);
-    });
+    .attr("x", (d) => graph.x(d))
+    .attr("y", (d) => graph.y(d))
+    .attr("height", (d) => graph.height(d))
+    .on("mouseover", (d) => toolTip(d))
+    .on("mouseout", (d) => removeToolTip(d));
 
   drawAxis(d);
 }
 
 // Update dynamic elements on Redraw
-let update = function (d) {
+let update = (d) => {
   let w = Math.floor(540 / d.length);
 
   graph.rects.transition().duration(750)
@@ -116,12 +104,10 @@ let update = function (d) {
 }
 
 // Cleanup
-let exit = function () {
-  graph.rects.exit().remove();
-}
+let exit = () => graph.rects.exit().remove();
 
 // Redraw graph with data and metric
-let render = function (d, m) {
+let render = (d, m) => {
   init(d, m);
   enter(d);
   update(d);
@@ -129,7 +115,7 @@ let render = function (d, m) {
 }
 
 // Main IIFE
-d3.json("data/age.json", function (d) {
+d3.json("data/age.json", (d) => {
   // Create svg element
   graph.container.svg = d3.select("#graph").append("svg")
     .attr("height", graph.container.height)
@@ -138,24 +124,20 @@ d3.json("data/age.json", function (d) {
   render(d, "total");
 
   // Event listeners for buttons
-  document.getElementById("total").addEventListener('click', function () {
-    render(d, "total");
-  });
-  document.getElementById("male").addEventListener('click', function () {
-    render(d, "males");
-  });
-  document.getElementById("female").addEventListener('click', function () {
-    render(d, "females");
-  });
-  document.getElementById("allAges").addEventListener('click', function () {
-    render(d, "total");
-  });
-  document.getElementById("over50").addEventListener('click', function () {
+  document.getElementById("total")
+    .addEventListener('click', () => render(d, "total"));
+  document.getElementById("male")
+    .addEventListener('click', () => render(d, "males"));
+  document.getElementById("female")
+    .addEventListener('click', () => render(d, "females"));
+  document.getElementById("allAges")
+    .addEventListener('click', () => render(d, "total"));
+  document.getElementById("over50").addEventListener('click', () => {
     render(d.filter(function (a) {
       return a.age >= 50;
     }), "total");
   });
-  document.getElementById("under50").addEventListener('click', function () {
+  document.getElementById("under50").addEventListener('click', () => {
     render(d.filter(function (a) {
       return a.age < 50;
     }), "total");
