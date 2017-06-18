@@ -2,12 +2,12 @@
   fill: darkslateblue;
 }
 
-.bar :hover {
+.bar:hover {
   fill: darksalmon;
 }
 
 .tooltip {
   font-family: sans-serif;
   font-size: 10px;
-  fill: crimson;
+  fill: blue;
 }
