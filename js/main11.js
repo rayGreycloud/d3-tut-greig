@@ -138,5 +138,27 @@ d3.json("data/age.json", function (d) {
   render(d, "total");
 
   // Event listeners for buttons
+  document.getElementById("total").addEventListener('click', function () {
+    render(d, "total");
+  });
+  document.getElementById("male").addEventListener('click', function () {
+    render(d, "males");
+  });
+  document.getElementById("female").addEventListener('click', function () {
+    render(d, "females");
+  });
+  document.getElementById("allAges").addEventListener('click', function () {
+    render(d, "total");
+  });
+  document.getElementById("over50").addEventListener('click', function () {
+    render(d.filter(function (a) {
+      return a.age >= 50;
+    }), "total");
+  });
+  document.getElementById("under50").addEventListener('click', function () {
+    render(d.filter(function (a) {
+      return a.age < 50;
+    }), "total");
+  });
 
 });
