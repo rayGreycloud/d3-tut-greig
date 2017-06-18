@@ -71,3 +71,48 @@ let init = function (d, m) {
   graph.rects = graph.container.svg.selectAll("rect")
     .data(d);
 }
+
+// Set static attributes
+let enter = function (d) {
+  let w = (480 / d.length);
+
+  graph.rects.enter().append("rect")
+    .attr("class", "bar")
+    .attr("width", w)
+    .attr("x", function (d) {
+      return graph.x(d);
+    })
+    .attr("y", function (d) {
+      return graph.y(d);
+    })
+    .attr("height", function (d) {
+      return graph.height(d);
+    })
+    .on("mouseover", function (d) {
+      toolTip(d);
+    })
+    .on("mouseout", function (d) {
+      removeToolTip(d);
+    });
+
+  drawAxis(d);
+}
+
+// Redraw graph with data and metric
+let render = function (d, m) {
+  init(d, m);
+  enter(d);
+}
+
+// Main IIFE
+d3.json("data/age.json", function (d) {
+  // Create svg element
+  graph.container.svg = d3.select("#graph").append("svg")
+    .attr("height", graph.container.height)
+    .attr("width", graph.container.width);
+
+  render(d, "total");
+
+  // Event listeners for buttons
+
+});
