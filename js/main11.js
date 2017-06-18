@@ -51,4 +51,23 @@ let removeToolTip = function (d) {
   graph.container.svg.selectAll(".tooltip").remove();
 }
 
-// 
+// Set metric, scales, domains and axes
+let init = function (d, m) {
+  graph.metric = m;
+  graph.xScale = d3.scaleLinear()
+    .domain([
+      d3.min(d, function (d) { return d.age; }),
+      d3.max(d, function (d) { return d.age; })
+    ])
+    .range([0, 540]);
+
+  graph.yScale = d3.scaleLinear()
+    .domain([500000, 5000000])
+    .range([250, 25]);
+
+  graph.yAxis = d3.axisLeft().scale(graph.yScale);
+  graph.xAxis = d3.axisBottom().scale(graph.xScale);
+
+  graph.rects = graph.container.svg.selectAll("rect")
+    .data(d);
+}
