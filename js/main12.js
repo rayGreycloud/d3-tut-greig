@@ -1,7 +1,7 @@
 // Wait for dataset loading
 d3.queue()
-  .defer(d3.json("data/age.json"))
-  .defer(d3.json("data/generation.json"))
+  .defer(d3.json, "data/age.json")
+  .defer(d3.json, "data/generation.json")
   .await(function (error, ageData, genData) {
 
     // Create svg elements
@@ -50,23 +50,29 @@ d3.queue()
     pieChart.render(genGroup, "value");
 
     // Event listeners for buttons
-    document.getElementById("total")
-      .addEventListener('click', () => barGraph.render(d, "total"));
-    document.getElementById("male")
-      .addEventListener('click', () => barGraph.render(d, "males"));
-    document.getElementById("female")
-      .addEventListener('click', () => barGraph.render(d, "females"));
-    document.getElementById("allAges")
-      .addEventListener('click', () => barGraph.render(d, "total"));
-    document.getElementById("over50").addEventListener('click', () => {
-      barGraph.render(d.filter(function (a) {
-        return a.age >= 50;
-      }), "total");
+    document.getElementById("total").addEventListener('click', function () {
+        barGraph.render(ageData, "total");
     });
-    document.getElementById("under50").addEventListener('click', () => {
-      barGraph.render(d.filter(function (a) {
+    document.getElementById("male").addEventListener('click', function () {
+        barGraph.render(ageData, "males");
+    });
+    document.getElementById("female").addEventListener('click', function () {
+        barGraph.render(ageData, "females");
+    });
+    document.getElementById("allAges").addEventListener('click', function () {
+        barGraph.render(ageData, "total");
+    });
+    document.getElementById("over50").addEventListener('click', function () {
+      let over50Total = ageData.filter(function (a) {
+        return a.age >= 50;
+      });
+      barGraph.render(over50Total, "total");
+    });
+    document.getElementById("under50").addEventListener('click', function () {
+      let under50Total = ageData.filter(function (a) {
         return a.age < 50;
-      }), "total");
+      });
+      barGraph.render(under50Total, "total");
     });
 
   });
