@@ -14,7 +14,7 @@ let barGraph = {
   yAxis: null,
   metric: null,
   x: function (d) {
-    return this.container.xOffset + graph.xScale(d['age']);
+    return this.container.xOffset + this.xScale(d['age']);
   },
   y: function (d) {
     return this.yScale(d[this.metric]);
@@ -23,7 +23,7 @@ let barGraph = {
     return (this.yScale(0) - this.yScale(d[this.metric]));
   },
 
-  drawAxis: (d) => {
+  drawAxis: function (d) {
     let _this = this;
     _this.container.svg.selectAll("g").remove();
     _this.container.svg.selectAll("g").data(d).enter()
@@ -36,16 +36,18 @@ let barGraph = {
       .call(_this.xAxis);
   },
 
-  infoTip: (d) => {
+  infoTip: function (d) {
     this.container.svg.append("text")
       .attr("x", this.xScale(d['age']))
       .attr("y", this.yScale(d[this.metric]))
       .attr("class", "infotip")
       .text(`Age: ${d.age} Pop: ${d[this.metric]}`);
   },
-  removeInfoTip: (d) => this.container.svg.selectAll(".infotip").remove(),
+  removeInfoTip: function (d) {
+    this.container.svg.selectAll(".infotip").remove();
+  },
 
-  init: (d, m) => {
+  init: function (d, m) {
     this.metric = m;
     this.xScale = d3.scaleLinear()
       .domain([
@@ -65,7 +67,7 @@ let barGraph = {
       .data(d);
   },
 
-  enter: (d) => {
+  enter: function (d) {
     let _this = this;
     let w = (480 / d.length);
 
@@ -75,13 +77,17 @@ let barGraph = {
       .attr("x", (d) => _this.x(d))
       .attr("y", (d) => _this.y(d))
       .attr("height", (d) => _this.height(d))
-      .on("mouseover", (d) => _this.infotip(d))
-      .on("mouseout", (d) => _this.removeInfoTip(d));
+      .on("mouseover", function (d) {
+        _this.infoTip(d);
+      })
+      .on("mouseout", function (d) {
+        _this.removeInfoTip(d);
+      });
 
     _this.drawAxis(d);
   },
 
-  update: (d) => {
+  update: function (d) {
     let _this = this;
     let w = Math.floor(540 / d.length);
 
@@ -98,9 +104,11 @@ let barGraph = {
     });
   },
 
-  exit: () => this.rects.exit().remove(),
+  exit: function () {
+    this.rects.exit().remove();
+  },
 
-  render: (d, m) => {
+  render: function (d, m) {
     this.init(d, m);
     this.enter(d);
     this.update(d);
