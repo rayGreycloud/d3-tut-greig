@@ -51,20 +51,20 @@ d3.queue()
 
     // Event listeners for buttons
     document.getElementById("total")
-      .addEventListener('click', () => render(d, "total"));
+      .addEventListener('click', () => barGraph.render(d, "total"));
     document.getElementById("male")
-      .addEventListener('click', () => render(d, "males"));
+      .addEventListener('click', () => barGraph.render(d, "males"));
     document.getElementById("female")
-      .addEventListener('click', () => render(d, "females"));
+      .addEventListener('click', () => barGraph.render(d, "females"));
     document.getElementById("allAges")
-      .addEventListener('click', () => render(d, "total"));
+      .addEventListener('click', () => barGraph.render(d, "total"));
     document.getElementById("over50").addEventListener('click', () => {
-      render(d.filter(function (a) {
+      barGraph.render(d.filter(function (a) {
         return a.age >= 50;
       }), "total");
     });
     document.getElementById("under50").addEventListener('click', () => {
-      render(d.filter(function (a) {
+      barGraph.render(d.filter(function (a) {
         return a.age < 50;
       }), "total");
     });
