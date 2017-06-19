@@ -13,21 +13,23 @@ let pieChart = {
   metric: null,
   color: null,
 
-  infoTip: (d) => {
+  infoTip: function (d) {
     this.container.svg.append("text")
       .attr("x", 10)
       .attr("y", 10)
       .attr("class", "infotip")
       .text(d.data["key"]);
   },
-  removeInfoTip: (d) => this.container.svg.selectAll(".infotip").remove(),
+  removeInfoTip: function (d) {
+    this.container.svg.selectAll(".infotip").remove()
+  },
 
-  init: (d, m) => {
+  init: function (d, m) {
     let _this = this;
     _this.metric = m;
     _this.pie = d3.pie()
       .sort(null)
-      .value((d) => d[_this.metric]);
+      .value(function (d) { return d[_this.metric]; });
 
     _this.path = d3.arc()
       .outerRadius(_this.radius - 10)
@@ -37,7 +39,7 @@ let pieChart = {
     _this.color = d3.scaleOrdinal(d3.schemeCategory20b);
   },
 
-  enter: (d) => {
+  enter: function (d) {
     let _this = this;
 
     _this.arc.enter().append("g")
@@ -45,26 +47,36 @@ let pieChart = {
       .attr("transform", `translate(${_this.container.width / 2}, ${_this.container.height / 2})`)
       .append("path")
       .attr("d", _this.path)
-      .attr("fill", (d) => _this.color(d.data.name))
-      .on("mouseover", (d) => _this.infotip(d))
-      .on("mouseout", (d) => _this.removeInfoTip(d));
+      .attr("fill", function (d) {
+        return _this.color(d.data.name)
+      })
+      .on("mouseover", function (d) {
+        _this.infoTip(d);
+      })
+      .on("mouseout", function (d) {
+        _this.removeInfoTip(d);
+      });
   },
 
-  update: (d) => {
+  update: function (d) {
     let _this = this;
 
     _this.arc.transition().duration(750)
       .attr("d", _this.path)
-      .attr("fill", (d) => _this.color(d.data.name))
+      .attr("fill", function (d) {
+        return _this.color(d.data.name);
+      });
   },
 
-  exit: () => this.arc.exit().remove(),
+  exit: function () {
+    this.arc.exit().remove();
+  },
 
-  render: (d, m) => {
+  render: function (d, m) {
     this.init(d, m);
     this.enter(d);
     this.update(d);
     this.exit();
   }
-  
+
 };

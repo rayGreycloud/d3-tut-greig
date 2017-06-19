@@ -9,7 +9,7 @@ d3.queue()
       .attr("height", barGraph.container.height)
       .attr("width", barGraph.container.width);
 
-    pieChart.container.svg = d3.select("#graph").append("svg")
+    pieChart.container.svg = d3.select("#chart").append("svg")
       .attr("height", pieChart.container.height)
       .attr("width", pieChart.container.width);
 
