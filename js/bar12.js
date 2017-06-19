@@ -4,8 +4,8 @@ let barGraph = {
     svg: null,
     xOffset: 60,
     yOffset: 0,
-    height: 600,
-    width: 800
+    height: 300,
+    width: 650
   },
   rects: null,
   xScale: null,
