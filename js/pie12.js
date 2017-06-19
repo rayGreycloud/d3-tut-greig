@@ -36,7 +36,8 @@ let pieChart = {
       .innerRadius(25);
     _this.arc = _this.container.svg.selectAll(".arc")
       .data(_this.pie(d));
-    _this.color = d3.scaleOrdinal(d3.schemeCategory20b);
+    _this.color = d3.scaleOrdinal()
+      .range(["#C0D6CC", "#A3C2BA", "#7D9EA8", "#546A87", "#37386B", "5758AA"]);
   },
 
   enter: function (d) {
@@ -48,7 +49,7 @@ let pieChart = {
       .append("path")
       .attr("d", _this.path)
       .attr("fill", function (d) {
-        return _this.color(d.data.name)
+        return _this.color(d.data["key"]);
       })
       .on("mouseover", function (d) {
         _this.infoTip(d);
@@ -64,7 +65,7 @@ let pieChart = {
     _this.arc.transition().duration(750)
       .attr("d", _this.path)
       .attr("fill", function (d) {
-        return _this.color(d.data.name);
+        return _this.color(d.key);
       });
   },
 
