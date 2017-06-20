@@ -1,12 +1,16 @@
-// Data set
-let arr = [4, 8, 15, 16, 23, 42, 25, 89, 45, 77, 23, 1, 47, 29, 56, 73, 99, 10];
+// create random data set
+let arr = [];
+
+for (let i = 0; i <= 20; i++) {
+  arr.push(Math.floor(Math.random() * 147));
+}
 
 // Initalize
 let p = null;
 
 let graph = d3.select("#graph").append("svg")
   .attr("width", 500)
-  .attr("height", 300);
+  .attr("height", 500);
 
 // Update
 let update = function () {
@@ -16,7 +20,7 @@ let update = function () {
     .attr("height", function (d) {return d * 2})
     .attr("x", function (d, i) {return i * 25})
     .attr("y", function (d) {return 250 - d * 2})
-    .attr("fill", randomColor.picker());
+    .attr("fill", function (d) { return colors[d] });
 }
 
 // Enter
@@ -27,7 +31,7 @@ let enter = function () {
     .attr("height", function (d) {return d * 2})
     .attr("x", function (d, i) {return i * 25})
     .attr("y", function (d) {return 250 - d * 2})
-    // .attr("fill", randomColor.picker());
+    .attr("fill", function (d) { return colors[d] });
 }
 
 // Exit
@@ -46,7 +50,7 @@ setInterval(function () {
   // Remove first number
   arr.shift();
   // Add random number to end
-  arr.push(Math.floor(Math.random() * 100));
+  arr.push(Math.floor(Math.random() * 147));
   // Refresh graph with new Data
   refresh();
 }, 1000);
