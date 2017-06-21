@@ -1,0 +1,21 @@
+#footer, #header {
+  margin: 10px;
+}
+
+.panel-heading {
+  background-color: #A3C2BA;
+}
+
+.bar {
+  fill: darkslateblue;
+}
+
+.bar:hover {
+  fill: darksalmon;
+}
+
+.tt {
+  font-family: sans-serif;
+  font-size: 10px;
+  fill: blue;
+}
